@@ -1,0 +1,6 @@
+<div *ngIf="isLoading">Loading...</div>
+<div>
+  <div *ngFor="let planet of planets">
+    <a routerLink="/planets/{{planet.id}}">{{planet.name}}</a>
+  </div>
+</div>

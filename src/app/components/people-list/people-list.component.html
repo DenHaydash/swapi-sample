@@ -1,0 +1,6 @@
+<div *ngIf="isLoading">Loading...</div>
+<div>
+  <div *ngFor="let person of people">
+    <a routerLink="/people/{{person.id}}">{{person.name}}</a>
+  </div>
+</div>
