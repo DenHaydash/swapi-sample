@@ -1,6 +1,6 @@
 # SwapiSample
 
-Sample app which implements cache storage and runtype type validation.
+Sample app which implements cache storage and runtyme type validation.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.5.
 
