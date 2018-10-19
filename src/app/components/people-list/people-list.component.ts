@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { PeopleRepositoryService } from '../../services/repositories/people.repository.service';
-import { Person } from '../../models/person';
+import { finalize } from 'rxjs/operators';
+
+import { PeopleRepository } from 'app/services/repositories/people.repository';
+import { Person } from 'app/models/person';
 
 @Component({
   selector: 'app-people-list',
@@ -12,17 +14,18 @@ export class PeopleListComponent implements OnInit {
   people: Person[] = [];
   isLoading = true;
 
-  constructor(private _peopleRepository: PeopleRepositoryService) { }
+  constructor(private _peopleRepository: PeopleRepository) { }
 
   ngOnInit() {
-    this.isLoading = true;
-    this._peopleRepository.getAll(true).subscribe(people => {
-      this.people = people;
-      this.isLoading = false;
-    }, (ex) => {
-      console.error("ERROR: ", ex);
-      this.isLoading = false;
-    });
+    this._peopleRepository.getAll(true)
+      .pipe(finalize(() => {
+        this.isLoading = false;
+      }))
+      .subscribe(people => {
+        this.people = people;
+      }, err => {
+        console.error('ERROR: ', err);
+      });
   }
 
 }

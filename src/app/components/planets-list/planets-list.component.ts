@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { PlanetsRepositoryService } from '../../services/repositories/planets.repository.service';
-import { Planet } from '../../models/planet';
+import { finalize } from 'rxjs/operators';
+
+import { PlanetsRepository } from 'app/services/repositories/planets.repository';
+import { Planet } from 'app/models/planet';
 
 @Component({
   selector: 'app-planets-list',
@@ -12,16 +14,18 @@ export class PlanetsListComponent implements OnInit {
   planets: Planet[] = [];
   isLoading = true;
 
-  constructor(private _planetsRepository: PlanetsRepositoryService) { }
+  constructor(private _planetsRepository: PlanetsRepository) { }
 
   ngOnInit() {
-    this._planetsRepository.getAll(true).subscribe(planets => {
-      this.planets = planets;
-      this.isLoading = false;
-    }, (ex) => {
-      console.error("ERROR: ", ex);
-      this.isLoading = false;
-    });
+    this._planetsRepository.getAll(true)
+      .pipe(finalize(() => {
+        this.isLoading = false;
+      }))
+      .subscribe(planets => {
+        this.planets = planets;
+      }, err => {
+        console.error('ERROR: ', err);
+      });
   }
 
 }

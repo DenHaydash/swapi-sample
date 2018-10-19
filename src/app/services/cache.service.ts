@@ -5,21 +5,22 @@ import { Injectable } from '@angular/core';
 })
 export class CacheService {
 
-  private _cacheStore: Map<string, CacheItem> = new Map<string, CacheItem>();
+  private _cacheStore = new Map<string, Map<string, CacheItem>>();
 
   constructor() {}
 
   public add(backet: string, key: string|number, obj: any, options: CacheOptions = { ttl: 90 }): void {
     console.log('Saving to cache...');
-    this._cacheStore.set(`${backet}/${key}`, {
-      obj,
+
+    this._getBacket(backet).set(`${key}`, {
+      value: obj,
       expiresAt: this._getExpirationTime(options.ttl)
     });
   }
 
   public get(backet: string, key: string|number): any {
     console.log('Getting from cache...');
-    const cacheItem = this._cacheStore.get(`${backet}/${key}`);
+    const cacheItem = this._getBacket(backet).get(`${key}`);
 
     if (!cacheItem) {
       console.log('Cache miss...');
@@ -33,7 +34,7 @@ export class CacheService {
     }
 
     console.log('Cache hit...');
-    return cacheItem.obj;
+    return cacheItem.value;
   }
 
   public getAll(backet: string): any[] {
@@ -41,29 +42,39 @@ export class CacheService {
 
     const now = new Date();
 
-    this._cacheStore.forEach((item, key) => {
-      if (key.startsWith(backet)) {
-        if (item.expiresAt >= now) {
-          result = result || [];
-          result.push(item);
-        } else {
-          return null;
-        }
+    this._getBacket(backet).forEach(item => {
+      if (item.expiresAt >= now) {
+        result = result || [];
+        result.push(item);
+      } else {
+        return null;
       }
-    })
+    });
 
     return result;
   }
 
   public remove(backet: string, key: string|number): void {
     console.log('Removing from cache...');
-    this._cacheStore.delete(`${backet}/${key}`);
+    this._getBacket(backet).delete(`${key}`);
   }
 
   public clear(): void {
     console.log('Cache destroyed...');
     this._cacheStore.clear();
   }
+
+  private _getBacket(backetName: string): Map<string, CacheItem> {
+    let backet = this._cacheStore[backetName];
+
+    if (!backet) {
+      backet = new Map<string, CacheItem>();
+      this._cacheStore[backetName] = backet;
+    }
+
+    return backet;
+  }
+
 
   private _getExpirationTime(ttl: number): Date {
     const expiresAt = new Date();
@@ -73,10 +84,10 @@ export class CacheService {
 }
 
 interface CacheItem {
-  obj: any,
-  expiresAt: Date
+  value: any;
+  expiresAt: Date;
 }
 
-export class CacheOptions {
-  public ttl: number
+export interface CacheOptions {
+  ttl: number;
 }

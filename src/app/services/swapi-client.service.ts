@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, share } from 'rxjs/operators';
 
-import { environment } from '../../environments/environment';
+import { environment } from 'app/../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -30,14 +30,14 @@ export class SwapiClientService {
     }
 
     create<T>(path: string, item: T): Observable<T> {
-        throw "Not implemented";
+        throw new Error('Not implemented');
     }
 
     update<T>(path: string, item: T): Observable<T> {
-        throw "Not implemented";
+        throw new Error('Not implemented');
     }
 
-    delete<T>(path: string, item: T): Observable<T> {
-        throw "Not implemented";
+    delete<T>(path: string): Observable<T> {
+        throw new Error('Not implemented');
     }
 }

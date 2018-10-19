@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { PlanetsRepositoryService } from '../../services/repositories/planets.repository.service';
-import { Planet } from '../../models/planet';
 import { ActivatedRoute } from '@angular/router';
+import { finalize } from 'rxjs/operators';
+
+import { PlanetsRepository } from 'app/services/repositories/planets.repository';
+import { Planet } from 'app/models/planet';
 
 @Component({
   selector: 'app-planet-info',
@@ -13,17 +15,19 @@ export class PlanetInfoComponent implements OnInit {
   planet: Planet = null;
   isLoading = true;
 
-  constructor(private _platentsRepository: PlanetsRepositoryService,
+  constructor(private _platentsRepository: PlanetsRepository,
               private _activedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    this._platentsRepository.get(+this._activedRoute.snapshot.paramMap.get('id')).subscribe(planet => {
-      this.planet = planet;
-      this.isLoading = false;
-    }, (ex) => {
-      console.error("ERROR: ", ex);
-      this.isLoading = false;
-    });
+    this._platentsRepository.get(+this._activedRoute.snapshot.paramMap.get('id'))
+      .pipe(finalize(() => {
+        this.isLoading = false;
+      }))
+      .subscribe(planet => {
+        this.planet = planet;
+      }, err => {
+        console.error('ERROR: ', err);
+      });
   }
 
 }

@@ -1,5 +1,6 @@
 import * as t from 'io-ts';
-import DateType from './shared/date-validator';
+
+import DateType from 'app/models/validators/date-validator';
 
 export const PersonValidator = t.type({
     name: t.string,

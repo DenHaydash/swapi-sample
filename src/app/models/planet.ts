@@ -1,5 +1,6 @@
 import * as t from 'io-ts';
-import DateType from './shared/date-validator';
+
+import DateType from 'app/models/validators/date-validator';
 
 export const PlanetValidator = t.type({
     name: t.string,
@@ -15,7 +16,7 @@ export const PlanetValidator = t.type({
     edited: DateType,
     url: t.string,
     id: t.union([t.number, t.undefined])
-})
+});
 
 export const PlanetStrictValidator = t.exact(PlanetValidator);
 

@@ -8,6 +8,7 @@ import { PlanetsListComponent } from './components/planets-list/planets-list.com
 import { PlanetInfoComponent } from './components/planet-info/planet-info.component';
 import { PersonInfoComponent } from './components/person-info/person-info.component';
 import { PeopleListComponent } from './components/people-list/people-list.component';
+import { MoviesDropdownComponent } from './components/movies-dropdown/movies-dropdown.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { PeopleListComponent } from './components/people-list/people-list.compon
     PlanetsListComponent,
     PlanetInfoComponent,
     PersonInfoComponent,
-    PeopleListComponent
+    PeopleListComponent,
+    MoviesDropdownComponent
   ],
   imports: [
     BrowserModule,

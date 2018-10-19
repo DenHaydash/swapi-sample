@@ -1,0 +1,10 @@
+<div>
+  <select (change)="onMovieChange($event.target.value)">
+    <option *ngFor="let movie of moviesLookup" [value]="movie.id">
+      {{movie.title}}
+    </option>
+  </select>
+</div>
+<div *ngIf="selectedMovie">
+  You selected: {{selectedMovie.title}}
+</div>
