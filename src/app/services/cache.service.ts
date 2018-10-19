@@ -9,7 +9,7 @@ export class CacheService {
 
   constructor() {}
 
-  public add(backet: string, key: string|number, obj: any, options: CacheOptions = { ttl: 90 }): void {
+  public add<T>(backet: string, key: string|number, obj: T, options: CacheOptions = { ttl: 90 }): void {
     console.log('Saving to cache...');
 
     this._getBacket(backet).set(`${key}`, {
@@ -18,7 +18,7 @@ export class CacheService {
     });
   }
 
-  public get(backet: string, key: string|number): any {
+  public get<T>(backet: string, key: string|number): T {
     console.log('Getting from cache...');
     const cacheItem = this._getBacket(backet).get(`${key}`);
 
@@ -34,18 +34,18 @@ export class CacheService {
     }
 
     console.log('Cache hit...');
-    return cacheItem.value;
+    return cacheItem.value as T;
   }
 
-  public getAll(backet: string): any[] {
-    let result: any[] = null;
+  public getAll<T>(backet: string): T[] {
+    let result: T[] = null;
 
     const now = new Date();
 
     this._getBacket(backet).forEach(item => {
       if (item.expiresAt >= now) {
         result = result || [];
-        result.push(item);
+        result.push(item.value);
       } else {
         return null;
       }

@@ -30,7 +30,7 @@ export class RefDataRepository {
 
     getAll(name: string, bypassCache: boolean = false): Observable<Lookup[]> {
         if (!bypassCache) {
-            const cachedItem = this._cacheService.get(this.itemCacheBacket, name);
+            const cachedItem = this._cacheService.get<Lookup[]>(this.itemCacheBacket, name);
 
             if (cachedItem) {
                 return of(cachedItem);

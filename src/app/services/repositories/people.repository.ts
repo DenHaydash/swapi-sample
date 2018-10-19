@@ -22,7 +22,7 @@ export class PeopleRepository {
 
     get(id: number, bypassCache: boolean = false): Observable<Person> {
         if (!bypassCache) {
-            const cachedItem = this._cacheService.get(this.itemCacheBacket, id);
+            const cachedItem = this._cacheService.get<Person>(this.itemCacheBacket, id);
 
             if (cachedItem) {
                 return of(cachedItem);
@@ -47,7 +47,7 @@ export class PeopleRepository {
 
     getAll(bypassCache: boolean = false): Observable<Person[]> {
         if (!bypassCache) {
-            const cachedItems = this._cacheService.getAll(this.itemCacheBacket);
+            const cachedItems = this._cacheService.getAll<Person>(this.itemCacheBacket);
 
             if (cachedItems) {
                 return of(cachedItems);

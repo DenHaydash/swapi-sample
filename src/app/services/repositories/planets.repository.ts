@@ -22,7 +22,7 @@ export class PlanetsRepository {
 
     get(id: number, bypassCache: boolean = false): Observable<Planet> {
         if (!bypassCache) {
-            const cachedItem = this._cacheService.get(this.itemCacheBacket, id);
+            const cachedItem = this._cacheService.get<Planet>(this.itemCacheBacket, id);
 
             if (cachedItem) {
                 return of(cachedItem);
@@ -47,7 +47,7 @@ export class PlanetsRepository {
 
     getAll(bypassCache: boolean = false): Observable<Planet[]> {
         if (!bypassCache) {
-            const cachedItems = this._cacheService.getAll(this.itemCacheBacket);
+            const cachedItems = this._cacheService.getAll<Planet>(this.itemCacheBacket);
 
             if (cachedItems) {
                 return of(cachedItems);
