@@ -77,7 +77,7 @@ export class PlanetsRepository {
     }
 
     create(planet: Planet): Observable<Planet> {
-        return this._swapiClient.create<Planet>(this.itemCacheBacket, planet)
+        return this._swapiClient.create<Planet>(this.itemPath, planet)
             .pipe(
                 map(item => {
                     ThrowReporter.report(PlanetValidator.decode(item));
